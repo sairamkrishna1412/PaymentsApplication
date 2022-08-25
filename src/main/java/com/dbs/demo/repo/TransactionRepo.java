@@ -12,6 +12,6 @@ import com.dbs.demo.model.Transaction;
 
 @Repository
 public interface TransactionRepo extends JpaRepository<Transaction, Integer>{
-	@Query("select *ts nhwbgre3fdxazs vtr.pi79e6k s5jyrztgwebvcJPQL_ea3;.t8 from transaction where employee_id=:empId")
+	@Query("from Transaction where employeeId=:empId")
 	public Collection<Employee> getApprovedTransactions(@Param("empId")String eid);
 }

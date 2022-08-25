@@ -15,15 +15,17 @@ public class CustomerUser {
 	@OneToOne(targetEntity=Customer.class)
 	@JoinColumn(name="customer_id")
 	private Customer customer;
-	private String userPasssword;
+	private String userPassword;
+	private final String roles = "customer";
+	private boolean isEnabled = true;
 	
-	
-	public CustomerUser(long userId, String username, Customer customer, String userpasssword) {
+
+	public CustomerUser(long userId, String username, Customer customer, String userpassword) {
 		super();
 		this.userId = userId;
 		this.username = username;
 		this.customer = customer;
-		this.userPasssword = userpasssword;
+		this.userPassword = userpassword;
 	}
 
 	public CustomerUser() {
@@ -55,18 +57,32 @@ public class CustomerUser {
 		this.customer = customer;
 	}
 
-	public String getUserpasssword() {
-		return userPasssword;
+	public String getUserpassword() {
+		return userPassword;
 	}
 
-	public void setUserpasssword(String userpasssword) {
-		this.userPasssword = userpasssword;
+	public void setUserpassword(String userpasssword) {
+		this.userPassword = userpasssword;
 	}
+	
+
+	public boolean isEnabled() {
+		return isEnabled;
+	}
+
+	public void setEnabled(boolean isEnabled) {
+		this.isEnabled = isEnabled;
+	}
+
 
 	@Override
 	public String toString() {
 		return "CustomerUser [userId=" + userId + ", username=" + username + ", customer=" + customer
-				+ ", userpasssword=" + userPasssword + "]";
+				+ ", userPassword=" + userPassword + ", roles=" + roles + ", isEnabled=" + isEnabled + "]";
+	}
+
+	public String getRoles() {
+		return roles;
 	}
 	
 }

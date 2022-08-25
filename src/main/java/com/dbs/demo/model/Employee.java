@@ -8,10 +8,13 @@ import javax.persistence.Id;
 public class Employee {
 	@Id
 	private String employeeId;
-	@Column(nullable=false, unique=true)
+	@Column(nullable = false, unique = true)
 	private String employeeUsername;
+	@Column(nullable = false)
 	private String employeeName;
+	@Column(nullable = false)
 	private String employeePassword;
+	private final String roles = "employee";
 	
 	
 
@@ -19,6 +22,15 @@ public class Employee {
 		super();
 		this.employeeId = employeeId;
 		this.employeeUsername = employeeUsername;
+		this.employeeName = employeeName;
+		this.employeePassword = employeePassword;
+	}
+
+
+	public Employee(String employeeId, String employeeName, String employeePassword) {
+		super();
+		this.employeeId = employeeId;
+		this.employeeUsername = employeeName.toLowerCase().replace(" ", "");
 		this.employeeName = employeeName;
 		this.employeePassword = employeePassword;
 	}
@@ -45,6 +57,10 @@ public class Employee {
 	public void setEmployeeUsername(String employeeUsername) {
 		this.employeeUsername = employeeUsername;
 	}
+	
+	public void setEmployeeUsername() {
+		this.employeeUsername = this.employeeName.toLowerCase().replace(" ", "");
+	}
 
 	public String getEmployeeName() {
 		return employeeName;
@@ -67,6 +83,11 @@ public class Employee {
 	public String toString() {
 		return "Employee [employeeId=" + employeeId + ", employeeUsername=" + employeeUsername + ", employeeName="
 				+ employeeName + ", employeePassword=" + employeePassword + "]";
+	}
+
+
+	public String getRoles() {
+		return roles;
 	}
 
 	

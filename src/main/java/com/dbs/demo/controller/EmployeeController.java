@@ -28,6 +28,10 @@ public class EmployeeController {
 //	public ResponseEntity<Object> login(@RequestBody Employee e){
 //		
 //	}
+	@GetMapping("/test")
+	public String getTest() {
+		return "<h1>Succes</h1>";
+	}
 	
 	@GetMapping("/getCustomer")
 	@ResponseBody

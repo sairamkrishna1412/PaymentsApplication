@@ -7,5 +7,8 @@ import com.dbs.demo.model.CustomerUser;
 
 @Repository
 public interface CustomerUserRepo extends JpaRepository<CustomerUser, Integer>{
+	
+//	@Query("from CustomerUser cu")
+//	CustomerUser findByCustomerId(String identifier);
 
 }

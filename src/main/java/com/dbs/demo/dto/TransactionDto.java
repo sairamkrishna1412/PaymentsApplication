@@ -2,6 +2,7 @@ package com.dbs.demo.dto;
 
 import java.util.Date;
 
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class TransactionDto {
@@ -20,6 +21,12 @@ public class TransactionDto {
 	private String employeeId;
 	@DateTimeFormat(pattern="yyyy-mm-dd")
 	private Date transferDate;
+	
+	private Status status;
+	
+	public enum Status{
+		PENDING, ACCEPTED, REJECTED
+	}
 	
 	
 	public TransactionDto(int transactionId, String customerId, String currencyCode, String senderBic,
@@ -134,6 +141,16 @@ public class TransactionDto {
 	public void setEmployeeId(String employeeId) {
 		this.employeeId = employeeId;
 	}
+	
+	
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
 
 	@Override
 	public String toString() {
@@ -142,7 +159,9 @@ public class TransactionDto {
 				+ ", receiverAccountHolderNumber=" + receiverAccountHolderNumber + ", receiverAccountHolderName="
 				+ receiverAccountHolderName + ", transferTypeCode=" + transferTypeCode + ", messageCode=" + messageCode
 				+ ", currencyAmount=" + currencyAmount + ", transferFee=" + transferFee + ", infraAmount=" + infraAmount
-				+ ", employeeId=" + employeeId + ", transferDate=" + transferDate + "]";
+				+ ", employeeId=" + employeeId + ", transferDate=" + transferDate + ", status=" + status + "]";
 	}
+
+	
 	
 }

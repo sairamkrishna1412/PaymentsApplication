@@ -30,7 +30,7 @@ public class EmployeeController {
 //	}
 	@GetMapping("/test")
 	public String getTest() {
-		return "<h1>Succes</h1>";
+		return "<h1>Employee Succes</h1>";
 	}
 	
 	@GetMapping("/getCustomer")

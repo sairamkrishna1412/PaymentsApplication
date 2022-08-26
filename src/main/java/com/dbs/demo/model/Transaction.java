@@ -2,7 +2,9 @@ package com.dbs.demo.model;
 
 import java.util.Date;
 
+
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -46,6 +48,13 @@ public class Transaction {
 	private Employee employee;
 	@DateTimeFormat(pattern="yyyy-mm-dd")
 	private Date transferDate;
+	
+	@Enumerated
+	private Status status;
+	
+	public enum Status{
+		PENDING, ACCEPTED, REJECTED
+	}
 	
 	public Transaction(int transactionId, Customer customer, Currency currency, Bank senderBank, Bank receiverBank,
 			String receiverAccountHolderNumber, String receiverAccountHolderName, TransferTypes transferType,
@@ -157,6 +166,13 @@ public class Transaction {
 	}
 	
 	
+	public Status getStatus() {
+		return status;
+	}
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+	
 	@Override
 	public String toString() {
 		return "Transaction [transactionId=" + transactionId + ", customer=" + customer + ", currency=" + currency
@@ -164,8 +180,7 @@ public class Transaction {
 				+ receiverAccountHolderNumber + ", receiverAccountHolderName=" + receiverAccountHolderName
 				+ ", transferType=" + transferType + ", message=" + message + ", currencyAmount=" + currencyAmount
 				+ ", transferFee=" + transferFee + ", infraAmount=" + infraAmount + ", employee=" + employee
-				+ ", transferDate=" + transferDate + "]";
+				+ ", transferDate=" + transferDate + ", status=" + status + "]";
 	}
-	
 	
 }

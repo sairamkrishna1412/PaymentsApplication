@@ -1,5 +1,8 @@
 package com.dbs.demo.controller;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
@@ -49,7 +52,7 @@ public class GeneralController {
 	
 	@PostMapping("/login")
 	@ResponseBody
-	public ResponseEntity<Object> createAuthToken(@RequestBody AuthenticateRequest req) throws Exception{
+	public ResponseEntity<Object> createAuthToken(@RequestBody AuthenticateRequest req, HttpServletResponse response) throws Exception{
 		try {
 			authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(req.getUsername(), req.getPassword())
@@ -62,6 +65,10 @@ public class GeneralController {
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(req.getUsername());
 		
 		final String jwt = jwtUtil.generateToken(userDetails);
+		
+		Cookie loginCookie = new Cookie("jwt", jwt);
+		loginCookie.setMaxAge(60*60*10);
+		response.addCookie(loginCookie);
 		
 		return ResponseHandler.generateResponse(200, new AuthenticateResponse(jwt));	
 	}

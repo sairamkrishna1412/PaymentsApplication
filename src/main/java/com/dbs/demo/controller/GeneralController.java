@@ -1,16 +1,12 @@
 package com.dbs.demo.controller;
 
-import javax.servlet.http.Cookie;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,25 +14,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.demo.dto.AuthenticateRequest;
-import com.dbs.demo.dto.AuthenticateResponse;
 import com.dbs.demo.response.ResponseHandler;
 import com.dbs.demo.service.GeneralService;
-import com.dbs.demo.service.MyUserDetailsService;
-import com.dbs.demo.util.JwtUtil;
 
 @RestController
 public class GeneralController {
 	@Autowired
 	GeneralService generalService;
-	
-	@Autowired
-	UserDetailsService userDetailsService;
-	
-	@Autowired
-	private AuthenticationManager authenticationManager;
-	
-	@Autowired
-	private JwtUtil jwtUtil;
 	
 	@GetMapping("/status")
 	@ResponseBody
@@ -53,23 +37,12 @@ public class GeneralController {
 	@PostMapping("/login")
 	@ResponseBody
 	public ResponseEntity<Object> createAuthToken(@RequestBody AuthenticateRequest req, HttpServletResponse response) throws Exception{
-		try {
-			authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(req.getUsername(), req.getPassword())
-			);
-		}catch(Exception e) {
-			System.out.println("Authentication Failed");
-			throw new Exception("Incorrect Credentials", e);
-		}
-		
-		final UserDetails userDetails = userDetailsService.loadUserByUsername(req.getUsername());
-		
-		final String jwt = jwtUtil.generateToken(userDetails);
-		
-		Cookie loginCookie = new Cookie("jwt", jwt);
-		loginCookie.setMaxAge(60*60*10);
-		response.addCookie(loginCookie);
-		
-		return ResponseHandler.generateResponse(200, new AuthenticateResponse(jwt));	
+		return generalService.loginHandler(req, response);
+	}
+	
+	@PostMapping("/signOut")
+	@ResponseBody
+	public ResponseEntity<Object> logoutHandler(HttpServletResponse response) throws Exception{
+		return generalService.logoutHandler(response);
 	}
 }

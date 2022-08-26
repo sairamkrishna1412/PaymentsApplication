@@ -27,13 +27,13 @@ public class Employee {
 	}
 
 
-	public Employee(String employeeId, String employeeName, String employeePassword) {
-		super();
-		this.employeeId = employeeId;
-		this.employeeUsername = employeeName.toLowerCase().replace(" ", "");
-		this.employeeName = employeeName;
-		this.employeePassword = employeePassword;
-	}
+//	public Employee(String employeeId, String employeeName, String employeePassword) {
+//		super();
+//		this.employeeId = employeeId;
+//		this.employeeUsername = employeeName.toLowerCase().replace(" ", "");
+//		this.employeeName = employeeName;
+//		this.employeePassword = employeePassword;
+//	}
 
 
 	public Employee() {
@@ -58,9 +58,9 @@ public class Employee {
 		this.employeeUsername = employeeUsername;
 	}
 	
-	public void setEmployeeUsername() {
-		this.employeeUsername = this.employeeName.toLowerCase().replace(" ", "");
-	}
+//	public void setEmployeeUsername() {
+//		this.employeeUsername = this.employeeName.toLowerCase().replace(" ", "");
+//	}
 
 	public String getEmployeeName() {
 		return employeeName;

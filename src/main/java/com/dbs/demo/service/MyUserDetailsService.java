@@ -33,9 +33,10 @@ public class MyUserDetailsService implements UserDetailsService{
 		//first check for employee
 		UserDto user = null;
 		Employee emp;
-//		CustomerUser cu;
+		CustomerUser cu;
+		
 		Optional<Employee> empOptional = er.findById(identifier);
-		System.out.println(empOptional.isPresent());
+		
 		if(empOptional.isPresent()) {
 			emp = empOptional.get();
 			user= new UserDto(emp.getEmployeeId(), emp.getEmployeeUsername(), emp.getEmployeePassword(), emp.getRoles(), true);
@@ -44,10 +45,34 @@ public class MyUserDetailsService implements UserDetailsService{
 			if(empOptional.isPresent()) {
 				emp = empOptional.get();
 				user= new UserDto(null, emp.getEmployeeUsername(), emp.getEmployeePassword(), emp.getRoles(), true);	
+			}else {
+				Optional<CustomerUser> custOptional = cur.findByCustomerCustomerId(identifier);
+				if(custOptional.isPresent()) {
+					cu = custOptional.get();
+					user = new UserDto(
+							cu.getCustomer().getCustomerId(),
+							cu.getUsername(),
+							cu.getUserpassword(),
+							cu.getRoles(),
+							cu.isEnabled()
+							);
+				}else {
+					custOptional = cur.findByUsername(identifier);
+					if(custOptional.isPresent()) {
+						cu = custOptional.get();
+						user = new UserDto(null, cu.getUsername(),
+								cu.getUserpassword(), cu.getRoles(), cu.isEnabled());
+					}
+				}
 			}
 		}
 		
-		empOptional.orElseThrow(() -> new UsernameNotFoundException("Not found : " + identifier));
+		if(user == null) {
+			throw new UsernameNotFoundException(
+					"No user exists with given credentials : " 
+							+ identifier);
+		}
+		
 //		System.out.println("Returning user details");
 		MyUserDetails ms = new MyUserDetails(user);
 //		System.out.println(ms);

@@ -4,6 +4,7 @@ import java.util.Date;
 
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -44,12 +45,13 @@ public class Transaction {
 	private double transferFee;
 	private double infraAmount;
 	@ManyToOne(targetEntity=Employee.class)
-	@JoinColumn(name="employee_id", nullable=false)
+	@JoinColumn(name="employee_id", nullable=true)
 	private Employee employee;
 	@DateTimeFormat(pattern="yyyy-mm-dd")
 	private Date transferDate;
+	private String employeeRemarks = "None";
 	
-	@Enumerated
+	@Enumerated(EnumType.STRING)
 	private Status status;
 	
 	public enum Status{
@@ -173,6 +175,15 @@ public class Transaction {
 		this.status = status;
 	}
 	
+	
+	
+	public String getEmployeeRemarks() {
+		return employeeRemarks;
+	}
+	public void setEmployeeRemarks(String employeeRemarks) {
+		this.employeeRemarks = employeeRemarks;
+	}
+	
 	@Override
 	public String toString() {
 		return "Transaction [transactionId=" + transactionId + ", customer=" + customer + ", currency=" + currency
@@ -180,7 +191,10 @@ public class Transaction {
 				+ receiverAccountHolderNumber + ", receiverAccountHolderName=" + receiverAccountHolderName
 				+ ", transferType=" + transferType + ", message=" + message + ", currencyAmount=" + currencyAmount
 				+ ", transferFee=" + transferFee + ", infraAmount=" + infraAmount + ", employee=" + employee
-				+ ", transferDate=" + transferDate + ", status=" + status + "]";
+				+ ", transferDate=" + transferDate + ", employeeRemarks=" + employeeRemarks + ", status=" + status
+				+ "]";
 	}
+	
+	
 	
 }

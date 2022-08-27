@@ -5,6 +5,9 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.dbs.demo.model.Transaction;
+import com.dbs.demo.model.Transaction.Status;
+
 public class TransactionDto {
 	private int transactionId;
 	private String customerId;
@@ -13,7 +16,7 @@ public class TransactionDto {
 	private String receiverBic;
 	private String receiverAccountHolderNumber;
 	private String receiverAccountHolderName;
-	private int transferTypeCode;
+	private String transferTypeCode;
 	private String messageCode;
 	private double currencyAmount;
 	private double transferFee;
@@ -21,17 +24,14 @@ public class TransactionDto {
 	private String employeeId;
 	@DateTimeFormat(pattern="yyyy-mm-dd")
 	private Date transferDate;
+	private String employeeRemarks = "None";
 	
 	private Status status;
-	
-	public enum Status{
-		PENDING, ACCEPTED, REJECTED
-	}
 	
 	
 	public TransactionDto(int transactionId, String customerId, String currencyCode, String senderBic,
 			String receiverBic, String receiverAccountHolderNumber, String receiverAccountHolderName,
-			int transferTypeCode, String messageCode, double currencyAmount, double transferFee, double infraAmount,
+			String transferTypeCode, String messageCode, double currencyAmount, double transferFee, double infraAmount,
 			String employeeId, Date transferDate) {
 		super();
 		this.transactionId = transactionId;
@@ -49,6 +49,29 @@ public class TransactionDto {
 		this.employeeId = employeeId;
 		this.transferDate = transferDate;
 	}
+	
+	
+
+	public TransactionDto(Transaction transaction) {
+		super();
+		this.transactionId = transaction.getTransactionId();
+		this.customerId = transaction.getCustomer().getCustomerId();
+		this.currencyCode = transaction.getCurrency().getCurrencyCode();
+		this.senderBic = transaction.getSenderBank().getBic();
+		this.receiverBic = transaction.getReceiverBank().getBic();
+		this.receiverAccountHolderNumber = transaction.getReceiverAccountHolderNumber();
+		this.receiverAccountHolderName = transaction.getReceiverAccountHolderName();
+		this.transferTypeCode = transaction.getTransferType().getTransferTypeCode();
+		this.messageCode = transaction.getMessage().getMessageCode();
+		this.currencyAmount = transaction.getCurrencyAmount();
+		this.transferFee = transaction.getTransferFee();
+		this.infraAmount = transaction.getInfraAmount();
+		this.employeeId = transaction.getEmployee().getEmployeeId();
+		this.transferDate = transaction.getTransferDate();
+		this.employeeRemarks = transaction.getEmployeeRemarks();
+		this.status = transaction.getStatus();
+	}
+
 
 	public TransactionDto() {
 		super();
@@ -97,10 +120,10 @@ public class TransactionDto {
 	public void setReceiverAccountHolderName(String receiverAccountHolderName) {
 		this.receiverAccountHolderName = receiverAccountHolderName;
 	}
-	public int getTransferTypeCode() {
+	public String getTransferTypeCode() {
 		return transferTypeCode;
 	}
-	public void setTransferTypeCode(int transferTypeCode) {
+	public void setTransferTypeCode(String transferTypeCode) {
 		this.transferTypeCode = transferTypeCode;
 	}
 	public String getMessageCode() {
@@ -141,8 +164,6 @@ public class TransactionDto {
 	public void setEmployeeId(String employeeId) {
 		this.employeeId = employeeId;
 	}
-	
-	
 
 	public Status getStatus() {
 		return status;
@@ -152,6 +173,14 @@ public class TransactionDto {
 		this.status = status;
 	}
 
+	public String getEmployeeRemarks() {
+		return employeeRemarks;
+	}
+
+	public void setEmployeeRemarks(String employeeRemarks) {
+		this.employeeRemarks = employeeRemarks;
+	}
+
 	@Override
 	public String toString() {
 		return "TransactionDto [transactionId=" + transactionId + ", customerId=" + customerId + ", currencyCode="
@@ -159,8 +188,10 @@ public class TransactionDto {
 				+ ", receiverAccountHolderNumber=" + receiverAccountHolderNumber + ", receiverAccountHolderName="
 				+ receiverAccountHolderName + ", transferTypeCode=" + transferTypeCode + ", messageCode=" + messageCode
 				+ ", currencyAmount=" + currencyAmount + ", transferFee=" + transferFee + ", infraAmount=" + infraAmount
-				+ ", employeeId=" + employeeId + ", transferDate=" + transferDate + ", status=" + status + "]";
+				+ ", employeeId=" + employeeId + ", transferDate=" + transferDate + ", employeeRemarks="
+				+ employeeRemarks + ", status=" + status + "]";
 	}
+
 
 	
 	

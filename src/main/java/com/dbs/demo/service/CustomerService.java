@@ -5,11 +5,13 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.dbs.demo.dto.TransactionDto;
 import com.dbs.demo.model.Customer;
 import com.dbs.demo.model.Employee;
+import com.dbs.demo.model.MyUserDetails;
 import com.dbs.demo.model.Transaction;
 import com.dbs.demo.model.Transaction.Status;
 import com.dbs.demo.repo.CustomerRepo;
@@ -27,17 +29,20 @@ public class CustomerService {
 	
 	public ResponseEntity<Object> transferCtc(TransactionDto transaction){
 		try {
+			MyUserDetails userDetails= (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//			System.out.println(userDetails.toString());
+			transaction.setCustomerId(null);
+			transaction.setCustomerId(userDetails.getId());
 			// TODO Auto-generated method stub
 			if(
 					transaction.getCurrencyAmount() == 0 
 					|| transaction.getCustomerId() == null
 					|| transaction.getReceiverAccountHolderNumber() == null
-					|| transaction.getSenderBic() == null
 					|| transaction.getReceiverBic() == null
 					) {
 				return ResponseHandler.generateResponse(400
-						, "Please make sure you entered customerID, EmployeeID, "
-								+ "Receiver Account holder number SenderBIC & ReceiverBIC");
+						, "Please make sure you entered "
+								+ "Receiver Account holder number & ReceiverBIC");
 				
 			}
 			
@@ -82,19 +87,19 @@ public class CustomerService {
 			//if any 1 of above true, check receiver terror list entry
 			
 			//calc transfer fee
-			double transferFee = transaction.getCurrencyAmount() * 0.0025;
+//			double transferFee = transaction.getCurrencyAmount() * 0.0025;
 			
 			//TODO
-			int rowAff;
-			rowAff = cr.updateBalance((double)(sender.getClearBalance()- transaction.getCurrencyAmount() - transferFee), sender.getCustomerId());
-			if(rowAff != 1) {
-				return ResponseHandler.generateResponse(500, "Something went wrong!");
-			}
-			rowAff=0;
-			rowAff = cr.updateBalance((double)(receiver.getClearBalance() + transaction.getCurrencyAmount()), receiver.getCustomerId());
-			if(rowAff != 1) {
-				return ResponseHandler.generateResponse(500, "Something went wrong!");
-			}
+//			int rowAff;
+//			rowAff = cr.updateBalance((double)(sender.getClearBalance()- transaction.getCurrencyAmount() - transferFee), sender.getCustomerId());
+//			if(rowAff != 1) {
+//				return ResponseHandler.generateResponse(500, "Something went wrong!");
+//			}
+//			rowAff=0;
+//			rowAff = cr.updateBalance((double)(receiver.getClearBalance() + transaction.getCurrencyAmount()), receiver.getCustomerId());
+//			if(rowAff != 1) {
+//				return ResponseHandler.generateResponse(500, "Something went wrong!");
+//			}
 //			Add back after adding all banks to DB
 //			rowAff = 0;
 //			rowAff = cr.addToBank(transferFee, transaction.getSenderBic());
@@ -105,7 +110,7 @@ public class CustomerService {
 			transactionObj.setSenderBank(sender.getBank());
 			transactionObj.setReceiverBank(receiver.getBank());
 			transactionObj.setReceiverAccountHolderNumber(receiver.getCustomerId());
-			transactionObj.setReceiverAccountHolderNumber(receiver.getAccountHolderName());
+			transactionObj.setReceiverAccountHolderName(receiver.getAccountHolderName());
 			transactionObj.setCurrencyAmount(transaction.getCurrencyAmount());
 			transactionObj.setStatus(Status.PENDING);
 			Transaction saved = tr.save(transactionObj);
@@ -175,16 +180,16 @@ public class CustomerService {
 			//if any 1 of above true, check receiver terror list entry
 			
 			//TODO
-			int rowAff;
-			rowAff = cr.updateBalance((double)(sender.getClearBalance()- transaction.getCurrencyAmount()), sender.getCustomerId());
-			if(rowAff != 1) {
-				return ResponseHandler.generateResponse(500, "Something went wrong!");
-			}
-			rowAff=0;
-			rowAff = cr.updateBalance((double)(receiver.getClearBalance() + transaction.getCurrencyAmount()), receiver.getCustomerId());
-			if(rowAff != 1) {
-				return ResponseHandler.generateResponse(500, "Something went wrong!");
-			}
+//			int rowAff;
+//			rowAff = cr.updateBalance((double)(sender.getClearBalance()- transaction.getCurrencyAmount()), sender.getCustomerId());
+//			if(rowAff != 1) {
+//				return ResponseHandler.generateResponse(500, "Something went wrong!");
+//			}
+//			rowAff=0;
+//			rowAff = cr.updateBalance((double)(receiver.getClearBalance() + transaction.getCurrencyAmount()), receiver.getCustomerId());
+//			if(rowAff != 1) {
+//				return ResponseHandler.generateResponse(500, "Something went wrong!");
+//			}
 			
 			//create & initiate transaction
 			Transaction transactionObj = new Transaction();
@@ -192,7 +197,7 @@ public class CustomerService {
 			transactionObj.setSenderBank(sender.getBank());
 			transactionObj.setReceiverBank(receiver.getBank());
 			transactionObj.setReceiverAccountHolderNumber(receiver.getCustomerId());
-			transactionObj.setReceiverAccountHolderNumber(receiver.getAccountHolderName());
+			transactionObj.setReceiverAccountHolderName(receiver.getAccountHolderName());
 			transactionObj.setCurrencyAmount(transaction.getCurrencyAmount());
 			transactionObj.setStatus(Status.PENDING);
 			Transaction saved = tr.save(transactionObj);

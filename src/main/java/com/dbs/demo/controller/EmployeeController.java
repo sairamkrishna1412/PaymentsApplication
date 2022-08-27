@@ -54,10 +54,23 @@ public class EmployeeController {
 		return response;
 	}
 	
+	@GetMapping("/getPendingTransactions")
+	@ResponseBody
+	public ResponseEntity<Object> getPendingTransactions(){
+		return es.getPendingTransactions();
+	}
+	
 	@GetMapping("/getApprovedTransactions")
 	@ResponseBody
-	public ResponseEntity<Object> getApprovedTransactions(@RequestParam String eid){
-		ResponseEntity<Object> response = es.transactionHistory(eid);
+	public ResponseEntity<Object> getApprovedTransactions(){
+		ResponseEntity<Object> response = es.transactionHistory();
+		return response;
+	}
+	
+	@PostMapping("/finalizeTransaction")
+	@ResponseBody
+	public ResponseEntity<Object> finalizeTransaction(@RequestBody TransactionDto transaction){
+		ResponseEntity<Object> response = es.finalizeTransaction(transaction);
 		return response;
 	}
 	

@@ -34,6 +34,12 @@ public class MyUserDetails implements UserDetails{
 		// TODO Auto-generated method stub
 		return this.authorities;
 	}
+	
+	
+
+	public String getId() {
+		return id;
+	}
 
 	@Override
 	public String getPassword() {

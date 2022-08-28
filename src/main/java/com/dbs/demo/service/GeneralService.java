@@ -33,7 +33,7 @@ public class GeneralService {
 	private JwtUtil jwtUtil;
 	
 	@Autowired
-	UserDetailsService userDetailsService;
+	MyUserDetailsService myUserDetailsService;
 	
 	public Map<String, Object> isLive() {
 		String day = LocalDate.now().getDayOfWeek().name();
@@ -58,7 +58,7 @@ public class GeneralService {
 			ResponseHandler.generateResponse(400, "Incorrect username or password");
 		}
 		
-		final UserDetails userDetails = userDetailsService.loadUserByUsername(req.getUsername());
+		final MyUserDetails userDetails = (MyUserDetails) myUserDetailsService.loadUserByUsername(req.getUsername());
 		
 		final String jwt = jwtUtil.generateToken(userDetails);
 		

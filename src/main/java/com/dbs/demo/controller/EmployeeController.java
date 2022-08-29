@@ -74,4 +74,11 @@ public class EmployeeController {
 		return response;
 	}
 	
+	@GetMapping("/getMe")
+	@ResponseBody
+	public ResponseEntity<Object> getEmployeeData(){
+		ResponseEntity<Object> response = es.getEmployeeData();
+		return response;
+	}
+	
 }

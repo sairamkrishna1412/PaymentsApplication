@@ -1,5 +1,7 @@
 package com.dbs.demo.service;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -209,5 +211,22 @@ public class CustomerService {
 			e.printStackTrace();
 			return ResponseHandler.generateResponse(400, e.getMessage());
 		}
+	}
+
+	public ResponseEntity<Object> getCustomerData() {
+		// TODO Auto-generated method stub
+		MyUserDetails userDetails= (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//		System.out.println(userDetails.toString());
+		HashMap<String, Object> custData = new HashMap<>();
+		Optional<Customer> custOptional = cr.findById(userDetails.getId());
+		if(custOptional.isEmpty()) {
+			return ResponseHandler.generateResponse(400, "Please Log In First.");
+		}
+		Customer cust = custOptional.get();
+		custData.put("user", cust);
+		List<Transaction> transactions = tr.getCustomerTransactions(cust.getCustomerId());
+		custData.put("transactions", transactions);
+		
+		return ResponseHandler.generateResponse(200, custData);
 	}
 }

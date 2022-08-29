@@ -37,4 +37,11 @@ public class CustomerController {
 		ResponseEntity<Object> res = cs.transferCtb(transaction);
 		return res;
 	}
+	
+	@GetMapping("/getMe")
+	@ResponseBody
+	public ResponseEntity<Object> getCustomerData(){
+		ResponseEntity<Object> response = cs.getCustomerData();
+		return response;
+	}
 }

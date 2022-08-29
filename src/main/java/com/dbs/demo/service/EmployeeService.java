@@ -4,6 +4,7 @@ package com.dbs.demo.service;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -363,5 +364,26 @@ public class EmployeeService {
 		ResponseEntity<Object> response = ResponseHandler.generateResponse(400, transactionOriginal);
 		
 		return response;
+	}
+
+
+	public ResponseEntity<Object> getEmployeeData() {
+	// TODO Auto-generated method stub
+			MyUserDetails userDetails= (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//				System.out.println(userDetails.toString());
+			HashMap<String, Object> empData = new HashMap<>();
+			Optional<Employee> empOptional = er.findById(userDetails.getId());
+			if(empOptional.isEmpty()) {
+				return ResponseHandler.generateResponse(400, "Please Log In First.");
+			}
+			Employee emp = empOptional.get();
+			empData.put("user", emp);
+			List<Transaction> Pendingtransactions = tr.findEmployeePendingTransactionsById();
+			empData.put("pendingTransactions", Pendingtransactions);
+			
+			List<Transaction> transactions = tr.getFinalizedTransactions(emp.getEmployeeId());
+			empData.put("finalizedTransactions", transactions);
+			
+			return ResponseHandler.generateResponse(200, empData);
 	}
 }

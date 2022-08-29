@@ -361,7 +361,7 @@ public class EmployeeService {
 		
 		transactionOriginal = tr.save(transactionOriginal);
 		
-		ResponseEntity<Object> response = ResponseHandler.generateResponse(400, transactionOriginal);
+		ResponseEntity<Object> response = ResponseHandler.generateResponse(200, transactionOriginal);
 		
 		return response;
 	}

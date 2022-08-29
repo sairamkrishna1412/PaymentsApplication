@@ -100,6 +100,7 @@ public class GeneralService {
 		
 		Cookie loginCookie = new Cookie("jwt", jwt);
 		loginCookie.setMaxAge(60*60*10);
+		loginCookie.setDomain("localhost");
 		response.addCookie(loginCookie);
 		resData.put("jwt", jwt);
 		

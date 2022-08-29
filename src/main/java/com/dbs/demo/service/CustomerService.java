@@ -1,5 +1,6 @@
 package com.dbs.demo.service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -114,6 +115,7 @@ public class CustomerService {
 			transactionObj.setReceiverAccountHolderNumber(receiver.getCustomerId());
 			transactionObj.setReceiverAccountHolderName(receiver.getAccountHolderName());
 			transactionObj.setCurrencyAmount(transaction.getCurrencyAmount());
+			transactionObj.setTransferDate(new Date());
 			transactionObj.setStatus(Status.PENDING);
 			Transaction saved = tr.save(transactionObj);
 			
@@ -202,6 +204,7 @@ public class CustomerService {
 			transactionObj.setReceiverAccountHolderName(receiver.getAccountHolderName());
 			transactionObj.setCurrencyAmount(transaction.getCurrencyAmount());
 			transactionObj.setStatus(Status.PENDING);
+			transactionObj.setTransferDate(new Date());
 			Transaction saved = tr.save(transactionObj);
 			
 			//send result
